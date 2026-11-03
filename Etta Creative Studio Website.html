@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etta — Motion Graphics, 2D Animation & Video Editing Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono for technical timecodes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#0B0914',
+                        obsidianLight: '#130F24',
+                        alabaster: '#F8F7FF',
+                        etta: {
+                            50: '#F5F3FF',
+                            100: '#EDE9FE',
+                            200: '#DDD6FE',
+                            300: '#C4B5FD',
+                            400: '#A78BFA',
+                            500: '#8B5CF6',
+                            600: '#7C3AED',
+                            700: '#6D28D9',
+                            800: '#5B21B6',
+                            900: '#4C1D95',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom styling for sleek minimalist scrollbar and glass effects */
+        :root {
+            --Discord-Invite-URL: "https://discord.gg/etta-studio";
+        }
+        body {
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+            overflow-x: hidden;
+        }
+        /* Subtle noise texture overlay */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(139, 92, 246, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
+        }
+        .glass-panel {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        /* Custom cubic-bezier transition for portfolio cards */
+        .motion-card {
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+        }
+        .motion-card:hover {
+            transform: translateY(-6px);
+        }
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 9999px;
+            background: #8B5CF6;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+            border: 2px solid #F8F7FF;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: rgba(139, 92, 246, 0.25);
+            border-radius: 999px;
+        }
+    </style>
+</head>
+
+<body class="bg-alabaster text-slate-900 dark:bg-obsidian dark:text-alabaster transition-colors duration-300 selection:bg-etta-500 selection:text-white">
+
+    <!-- Reusable SVG Definitions for the exact uploaded Etta Logo -->
+    <svg width="0" height="0" class="hidden" aria-hidden="true">
+        <defs>
+            <!-- 
+                Exact vector recreation of the uploaded 'Etta' wordmark:
+                - Custom stylized 'E': 
+                  1) Top detached sweeping arc into horizontal bar with angled right cut.
+                  2) Bottom rounded C-curve with middle horizontal bar that has a matching angled right cut.
+                - Geometric 't', 't' with clean crossbars and curved bottom terminals.
+                - Geometric circular 'a' with clean right stem.
+            -->
+            <symbol id="etta-logo" viewBox="0 0 375 130">
+                <!-- Top detached curve of 'E' -->
+                <path d="M 16 61 C 17 31, 41 18, 72 18 L 122 18 C 115 30, 108 35, 97 35 L 70 35 C 48 35, 31 46, 16 61 Z" fill="currentColor"/>
+                <!-- Lower body & middle bar of 'E' -->
+                <path d="M 16 69 C 24 58, 35 53, 50 53 L 99 53 C 92 65, 84 70, 72 70 L 42 70 C 36 70, 34 74, 34 79 C 34 91, 46 101, 65 101 L 122 101 L 122 118 L 63 118 C 33 118, 16 99, 16 74 C 16 72, 16 70.5, 16 69 Z" fill="currentColor"/>
+                <!-- First 't' -->
+                <path d="M 139 22 L 156 22 L 156 42 L 183 42 L 183 57 L 156 57 L 156 89 C 156 98, 162 102, 172 102 L 181 102 L 181 118 L 169 118 C 148 118, 139 107, 139 89 L 139 57 L 127 57 L 127 42 L 139 42 Z" fill="currentColor"/>
+                <!-- Second 't' -->
+                <path d="M 206 22 L 223 22 L 223 42 L 250 42 L 250 57 L 223 57 L 223 89 C 223 98, 229 102, 239 102 L 248 102 L 248 118 L 236 118 C 215 118, 206 107, 206 89 L 206 57 L 194 57 L 194 42 L 206 42 Z" fill="currentColor"/>
+                <!-- Geometric lowercase 'a' -->
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M 308 38 C 281 38, 261 56, 261 78 C 261 100, 281 118, 306 118 C 320 118, 331 112, 338 103 L 338 117 L 355 117 L 355 78 C 355 54, 335 38, 308 38 Z M 308 54 C 325 54, 338 64, 338 78 C 338 92, 325 102, 308 102 C 291 102, 278 92, 278 78 C 278 64, 291 54, 308 54 Z" fill="currentColor"/>
+            </symbol>
+
+            <!-- Discord Icon Symbol -->
+            <symbol id="discord-icon" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Ambient Minimalist Purple Background Glows -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[750px] h-[420px] bg-etta-600/15 dark:bg-etta-500/15 blur-[130px] rounded-full"></div>
+        <div class="absolute top-[45%] -right-32 w-[450px] h-[450px] bg-etta-400/10 dark:bg-etta-600/10 blur-[140px] rounded-full"></div>
+        <div class="absolute inset-0 bg-grid-pattern opacity-60 dark:opacity-100"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 w-full border-b border-etta-500/10 bg-alabaster/80 dark:bg-obsidian/80 glass-panel transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <!-- Brand Wordmark (Recreated SVG) -->
+            <a href="#" class="flex items-center gap-2.5 group focus:outline-none" aria-label="Etta Home">
+                <svg class="h-8 w-auto text-slate-900 dark:text-white group-hover:text-etta-500 transition-colors">
+                    <use href="#etta-logo"></use>
+                </svg>
+            </a>
+
+            <!-- Right Actions: Minimal Links + Theme Toggle + Discord CTA -->
+            <div class="flex items-center gap-3 sm:gap-5">
+                <a href="#work" class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-etta-500 transition-colors">Work</a>
+                <a href="#discord" class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-etta-500 transition-colors">Discord</a>
+
+                <!-- Minimalist Theme Toggle -->
+                <button id="themeToggleBtn" type="button" class="p-2 rounded-full border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:border-etta-500/50 hover:text-etta-500 transition-all" aria-label="Toggle color theme">
+                    <svg id="sunIcon" class="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg id="moonIcon" class="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <!-- Primary Discord Navbar CTA -->
+                <a href="https://discord.gg/etta-studio" target="_blank" rel="noopener noreferrer" onclick="handleDiscordClick(event)" class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-etta-600 hover:bg-etta-500 text-white shadow-lg shadow-etta-600/25 transition-all active:scale-95">
+                    <svg class="w-4 h-4"><use href="#discord-icon"></use></svg>
+                    <span>Join</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6">
+        <!-- ULTRA-MINIMAL HERO SECTION -->
+        <section class="py-16 sm:py-24 text-center flex flex-col items-center">
+            <svg class="h-14 sm:h-20 w-auto text-slate-900 dark:text-white mb-6">
+                <use href="#etta-logo"></use>
+            </svg>
+
+            <h1 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-3">
+                Motion. <span class="text-etta-500 dark:text-etta-400">2D.</span> Edit.
+            </h1>
+
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mb-8">
+                Visual storytelling &amp; high-retention motion design.
+            </p>
+
+            <div class="flex items-center justify-center gap-3 sm:gap-4">
+                <a href="#work" class="px-6 py-3 rounded-full bg-slate-900 text-white dark:bg-white dark:text-obsidian font-semibold text-xs sm:text-sm hover:opacity-90 transition-all">
+                    Watch Work
+                </a>
+                <a href="#discord" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-etta-600 hover:bg-etta-500 text-white font-semibold text-xs sm:text-sm shadow-lg shadow-etta-600/30 transition-all">
+                    <svg class="w-4 h-4"><use href="#discord-icon"></use></svg>
+                    <span>Join Discord</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- SINGLE UNIFIED VIDEO PORTFOLIO SECTION (MAIN 16:9 + 4 SHORTS 9:16) -->
+        <section id="work" class="pb-24 space-y-8">
+            <!-- Section Header + Quick Video Manager Toggle -->
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/70 dark:border-white/10 pb-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-2.5 h-2.5 rounded-full bg-etta-500 animate-pulse"></span>
+                    <h2 class="font-display text-lg sm:text-xl font-bold tracking-tight">Featured Work</h2>
+                    <span id="totalVideoCount" class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-etta-500/10 text-etta-600 dark:text-etta-300 border border-etta-500/20">
+                        1 Main • 4 Shorts
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="togglePreviewMode()" id="modeToggleBtn" class="text-xs font-mono px-3 py-1.5 rounded-full border border-slate-300 dark:border-white/15 text-slate-600 dark:text-slate-300 hover:border-etta-500/50 hover:text-etta-400 transition-all">
+                        Mode: Live Embed
+                    </button>
+                    <button type="button" onclick="toggleVideoManager()" class="inline-flex items-center gap-1.5 text-xs font-mono px-3.5 py-1.5 rounded-full bg-etta-500/15 hover:bg-etta-500/25 text-etta-600 dark:text-etta-300 border border-etta-500/30 transition-all">
+                        <span>+ Add / Edit Videos</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Collapsible Quick Video Manager so owner can add or swap YouTube URLs anytime -->
+            <div id="videoManagerPanel" class="hidden rounded-2xl border border-etta-500/30 bg-white/90 dark:bg-obsidianLight/95 p-5 shadow-xl space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-display text-sm font-bold text-slate-900 dark:text-white">Add or Replace YouTube Video</h3>
+                    <button type="button" onclick="toggleVideoManager()" class="text-xs font-mono text-slate-400 hover:text-white">Close ✕</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                    <input id="newVideoTitle" type="text" placeholder="Title (e.g. Showreel)" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-black/50 border border-slate-200 dark:border-white/10 text-xs focus:outline-none focus:border-etta-500" />
+                    <input id="newVideoUrl" type="text" placeholder="Paste YouTube or Shorts URL..." class="sm:col-span-2 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-black/50 border border-slate-200 dark:border-white/10 text-xs font-mono focus:outline-none focus:border-etta-500" />
+                    <div class="flex gap-2">
+                        <select id="newVideoFormat" class="flex-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-black/50 border border-slate-200 dark:border-white/10 text-xs focus:outline-none focus:border-etta-500">
+                            <option value="short">Add as Short (9:16)</option>
+                            <option value="main">Set as Main (16:9)</option>
+                        </select>
+                        <button type="button" onclick="addCustomVideo()" class="px-4 py-2 rounded-xl bg-etta-600 hover:bg-etta-500 text-white text-xs font-semibold transition-all">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. FEATURED MAIN VIDEO (16:9 WIDESCREEN CENTERPIECE) -->
+            <div id="mainVideoContainer" class="w-full">
+                <!-- Populated dynamically by renderAllVideos() -->
+            </div>
+
+            <!-- 2. 4 VERTICAL YOUTUBE SHORTS (9:16 RESPONSIVE 4-COLUMN GRID) -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400">Shorts &amp; Vertical Edits (9:16)</span>
+                    <span class="text-[11px] font-mono text-slate-400 dark:text-slate-500">Tap any video to play or open on YouTube</span>
+                </div>
+                <div id="shortsGridContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <!-- Populated dynamically by renderAllVideos() -->
+                </div>
+            </div>
+        </section>
+
+        <!-- MINIMAL DISCORD CALL TO ACTION -->
+        <section id="discord" class="pb-24">
+            <div class="rounded-3xl border border-etta-500/30 bg-gradient-to-b from-etta-900/40 to-obsidian p-8 sm:p-12 text-center relative overflow-hidden">
+                <div class="max-w-md mx-auto space-y-5 relative z-10">
+                    <div class="w-12 h-12 rounded-2xl bg-etta-600/20 border border-etta-400/30 text-etta-300 flex items-center justify-center mx-auto">
+                        <svg class="w-6 h-6"><use href="#discord-icon"></use></svg>
+                    </div>
+
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">
+                        Ready to create?
+                    </h2>
+
+                    <p class="text-xs sm:text-sm text-slate-300">
+                        Connect with us directly on Discord.
+                    </p>
+
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <a id="primaryDiscordLink" href="https://discord.gg/etta-studio" target="_blank" rel="noopener noreferrer" onclick="handleDiscordClick(event)" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-etta-600 hover:bg-etta-500 text-white font-semibold text-sm shadow-xl shadow-etta-600/30 transition-all">
+                            <svg class="w-4 h-4"><use href="#discord-icon"></use></svg>
+                            <span>Join Etta Discord</span>
+                        </a>
+                        <button type="button" onclick="copyDiscordInvite()" class="w-full sm:w-auto px-5 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-slate-300 transition-all">
+                            Copy Link
+                        </button>
+                    </div>
+
+                    <!-- Minimal Invite Link Setter -->
+                    <div class="pt-2">
+                        <button type="button" onclick="toggleLinkEditor()" id="discordUrlDisplay" class="inline-flex items-center gap-1.5 text-[11px] font-mono text-etta-300/70 hover:text-etta-300 underline">
+                            <span>discord.gg/etta-studio</span>
+                            <span>⚙</span>
+                        </button>
+                        <div id="customLinkEditor" class="hidden mt-3 p-2 rounded-xl bg-black/50 border border-etta-500/30 flex items-center gap-2 max-w-xs mx-auto">
+                            <input type="text" id="customDiscordInput" value="https://discord.gg/etta-studio" placeholder="https://discord.gg/..." class="flex-1 bg-transparent text-xs font-mono text-white focus:outline-none px-2 py-1" />
+                            <button type="button" onclick="saveCustomDiscordUrl()" class="px-3 py-1 rounded-lg bg-etta-600 hover:bg-etta-500 text-xs font-semibold text-white">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MINIMALIST FOOTER -->
+    <footer class="border-t border-slate-200/80 dark:border-white/10 py-8 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <svg class="h-5 w-auto text-slate-900 dark:text-white">
+                <use href="#etta-logo"></use>
+            </svg>
+            <span class="text-xs font-mono text-slate-500 dark:text-slate-400">
+                © <span id="yearSpan">2026</span> Etta
+            </span>
+        </div>
+    </footer>
+
+    <!-- CUSTOM TOAST NOTIFICATION -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
+        <div class="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-obsidianLight border border-etta-400/40 text-white shadow-xl">
+            <span class="w-2 h-2 rounded-full bg-etta-400"></span>
+            <span id="toastMessage" class="text-xs font-mono">Copied!</span>
+        </div>
+    </div>
+
+    <!-- APPLICATION SCRIPTS -->
+    <script>
+        let discordInviteUrl = "https://discord.gg/etta-studio";
+        let useThumbnailPreviewMode = false;
+
+        // Main Featured 16:9 Video from user's link: https://youtu.be/AdfS5lyRkeg?si=9G5QgrlAa2mho5Z5
+        let mainVideo = {
+            id: "AdfS5lyRkeg",
+            title: "Main Showreel",
+            tag: "Featured 16:9",
+            directUrl: "https://youtu.be/AdfS5lyRkeg"
+        };
+
+        // 4 Vertical 9:16 YouTube Shorts from user's links
+        let shortVideos = [
+            {
+                id: "I8rA4ZAP9jk",
+                title: "Short 01",
+                tag: "Shorts • 9:16",
+                directUrl: "https://youtube.com/shorts/I8rA4ZAP9jk"
+            },
+            {
+                id: "845Qyv8rj_w",
+                title: "Short 02",
+                tag: "Shorts • 9:16",
+                directUrl: "https://youtube.com/shorts/845Qyv8rj_w"
+            },
+            {
+                id: "2tgJ48HpA84",
+                title: "Short 03",
+                tag: "Shorts • 9:16",
+                directUrl: "https://youtube.com/shorts/2tgJ48HpA84"
+            },
+            {
+                id: "zy262Wdgk2s",
+                title: "Short 04",
+                tag: "Shorts • 9:16",
+                directUrl: "https://youtube.com/shorts/zy262Wdgk2s"
+            }
+        ];
+
+        // Theme Toggle
+        document.getElementById('themeToggleBtn').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // Helper to extract 11-character YouTube ID from any watch, youtu.be, or shorts URL
+        function extractYouTubeId(input) {
+            if (!input) return null;
+            const trimmed = input.trim();
+            if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+            const regex = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/;
+            const match = trimmed.match(regex);
+            return match ? match[1] : null;
+        }
+
+        // Build privacy-enhanced embed URL with origin parameter when hosted
+        function getEmbedUrl(videoId, autoplay = false) {
+            const base = `https://www.youtube-nocookie.com/embed/${videoId}`;
+            const params = new URLSearchParams({
+                rel: "0",
+                modestbranding: "1",
+                playsinline: "1"
+            });
+            if (autoplay) {
+                params.set("autoplay", "1");
+            }
+            return `${base}?${params.toString()}`;
+        }
+
+        // Switch a single card from Thumbnail cover mode to live iframe on click
+        function activateInlinePlayer(containerId, videoId) {
+            const wrapper = document.getElementById(containerId);
+            if (!wrapper) return;
+            wrapper.innerHTML = `
+                <iframe
+                    src="${getEmbedUrl(videoId, true)}"
+                    title="YouTube video player"
+                    class="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
+            `;
+        }
+
+        // Render both the 16:9 Featured Video and the 4 Vertical 9:16 Shorts in one unified section
+        function renderAllVideos() {
+            const mainContainer = document.getElementById('mainVideoContainer');
+            const shortsContainer = document.getElementById('shortsGridContainer');
+            const countBadge = document.getElementById('totalVideoCount');
+
+            countBadge.textContent = `1 Main • ${shortVideos.length} Shorts`;
+
+            // 1. Render Main 16:9 Widescreen Video
+            const mainMediaMarkup = !useThumbnailPreviewMode
+                ? `<iframe
+                        src="${getEmbedUrl(mainVideo.id, false)}"
+                        title="${mainVideo.title}"
+                        class="w-full h-full border-0"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                   </iframe>`
+                : `<div onclick="activateInlinePlayer('mainPlayerWrap', '${mainVideo.id}')" class="relative w-full h-full group cursor-pointer overflow-hidden bg-obsidian">
+                        <img src="https://i.ytimg.com/vi/${mainVideo.id}/maxresdefault.jpg"
+                             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${mainVideo.id}/hqdefault.jpg';"
+                             alt="${mainVideo.title}"
+                             class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/20 to-transparent flex items-center justify-center">
+                            <div class="w-16 h-16 rounded-full bg-etta-600/95 text-white flex items-center justify-center shadow-2xl shadow-etta-600/50 group-hover:scale-110 transition-transform">
+                                <svg class="w-7 h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                        </div>
+                   </div>`;
+
+            mainContainer.innerHTML = `
+                <div class="motion-card rounded-3xl border border-etta-500/30 bg-white dark:bg-obsidianLight shadow-2xl shadow-etta-500/10 overflow-hidden">
+                    <div id="mainPlayerWrap" class="relative aspect-video w-full bg-[#07050E]">
+                        ${mainMediaMarkup}
+                    </div>
+                    <div class="px-5 py-3.5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200/70 dark:border-white/10">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2.5 py-0.5 rounded-full bg-etta-500/15 text-etta-600 dark:text-etta-300 text-[11px] font-mono border border-etta-500/30">
+                                ${mainVideo.tag}
+                            </span>
+                            <h3 class="font-display text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                                ${mainVideo.title}
+                            </h3>
+                        </div>
+                        <a href="${mainVideo.directUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-mono text-etta-600 dark:text-etta-400 hover:underline">
+                            <span>Open on YouTube</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            // 2. Render 4 Vertical 9:16 YouTube Shorts
+            shortsContainer.innerHTML = '';
+            shortVideos.forEach((short, idx) => {
+                const wrapId = `shortPlayerWrap-${idx}`;
+                const shortMediaMarkup = !useThumbnailPreviewMode
+                    ? `<iframe
+                            src="${getEmbedUrl(short.id, false)}"
+                            title="${short.title}"
+                            class="w-full h-full border-0"
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                       </iframe>`
+                    : `<div onclick="activateInlinePlayer('${wrapId}', '${short.id}')" class="relative w-full h-full group cursor-pointer overflow-hidden bg-obsidian">
+                            <img src="https://i.ytimg.com/vi/${short.id}/hqdefault.jpg"
+                                 alt="${short.title}"
+                                 class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-etta-600/95 text-white flex items-center justify-center shadow-xl shadow-etta-600/50 group-hover:scale-110 transition-transform">
+                                    <svg class="w-5 h-5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                            </div>
+                       </div>`;
+
+                const card = document.createElement('div');
+                card.className = "motion-card rounded-2xl border border-slate-200/80 dark:border-white/10 hover:border-etta-500/40 bg-white dark:bg-obsidianLight overflow-hidden flex flex-col shadow-lg";
+                card.innerHTML = `
+                    <div id="${wrapId}" class="relative aspect-[9/16] w-full bg-[#07050E]">
+                        ${shortMediaMarkup}
+                    </div>
+                    <div class="px-3.5 py-2.5 flex items-center justify-between border-t border-slate-200/60 dark:border-white/10">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-etta-400"></span>
+                            <span class="font-display text-xs font-semibold text-slate-800 dark:text-slate-100">${short.title}</span>
+                        </div>
+                        <a href="${short.directUrl}" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-etta-500 hover:text-etta-400 hover:underline">
+                            YouTube ↗
+                        </a>
+                    </div>
+                `;
+                shortsContainer.appendChild(card);
+            });
+        }
+
+        // Toggle between Live Iframe Embeds and High-Res Thumbnail Cover Mode
+        function togglePreviewMode() {
+            useThumbnailPreviewMode = !useThumbnailPreviewMode;
+            const btn = document.getElementById('modeToggleBtn');
+            btn.textContent = useThumbnailPreviewMode ? "Mode: Thumbnail Cover" : "Mode: Live Embed";
+            renderAllVideos();
+        }
+
+        // Toggle Add/Edit Video Drawer
+        function toggleVideoManager() {
+            document.getElementById('videoManagerPanel').classList.toggle('hidden');
+        }
+
+        // Add or Replace a YouTube Video
+        function addCustomVideo() {
+            const titleInput = document.getElementById('newVideoTitle');
+            const urlInput = document.getElementById('newVideoUrl');
+            const formatSelect = document.getElementById('newVideoFormat');
+
+            const videoId = extractYouTubeId(urlInput.value);
+            if (!videoId) {
+                showToast("Please paste a valid YouTube link");
+                return;
+            }
+
+            const cleanTitle = titleInput.value.trim() || (formatSelect.value === 'main' ? 'Featured Reel' : `Short 0${shortVideos.length + 1}`);
+
+            if (formatSelect.value === 'main') {
+                mainVideo = {
+                    id: videoId,
+                    title: cleanTitle,
+                    tag: "Featured 16:9",
+                    directUrl: `https://youtu.be/${videoId}`
+                };
+                showToast("Main 16:9 video updated!");
+            } else {
+                shortVideos.push({
+                    id: videoId,
+                    title: cleanTitle,
+                    tag: "Shorts • 9:16",
+                    directUrl: `https://youtube.com/shorts/${videoId}`
+                });
+                showToast("New Short added to grid!");
+            }
+
+            titleInput.value = '';
+            urlInput.value = '';
+            renderAllVideos();
+        }
+
+        // Discord Link Utilities
+        function handleDiscordClick(e) {
+            e.currentTarget.href = discordInviteUrl;
+        }
+
+        function copyDiscordInvite() {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = discordInviteUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast("Discord link copied!");
+        }
+
+        function toggleLinkEditor() {
+            document.getElementById('customLinkEditor').classList.toggle('hidden');
+        }
+
+        function saveCustomDiscordUrl() {
+            const val = document.getElementById('customDiscordInput').value.trim();
+            if (val) {
+                discordInviteUrl = val.startsWith('http') ? val : `https://${val}`;
+                document.getElementById('discordUrlDisplay').innerHTML = `<span>${discordInviteUrl.replace(/^https?:\/\//, '')}</span> <span>⚙</span>`;
+                document.getElementById('primaryDiscordLink').href = discordInviteUrl;
+                document.getElementById('customLinkEditor').classList.add('hidden');
+                showToast("Discord link saved!");
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('opacity-0', 'translate-y-3');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-3');
+            }, 2500);
+        }
+
+        window.onload = function () {
+            document.getElementById('yearSpan').textContent = new Date().getFullYear();
+            renderAllVideos();
+        };
+    </script>
+</body>
+</html>
